@@ -206,6 +206,9 @@ public class FanFavorites {
 package com.handson.chatbot.model;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -217,6 +220,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class FanFavorites {
     private Data data;
     private Extensions extensions;
@@ -249,21 +253,22 @@ public class FanFavorites {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown=true)
     public static class Node {
         private String id;
         private TitleText titleText;
-        private TitleType titleType;
-        private OriginalTitleText originalTitleText;
-        private PrimaryImage primaryImage;
+      //  private TitleType titleType;
+       // private OriginalTitleText originalTitleText;
+      //  private PrimaryImage primaryImage;
         private ReleaseYear releaseYear;
         private RatingsSummary ratingsSummary;
-        private MovieRuntime runtime;
-        private Certificate certificate;
-        private CanRate canRate;
-        private TitleGenres titleGenres;
-        private Boolean canHaveEpisodes;
-        private LatestTrailer latestTrailer;
-        private Object primaryWatchOption;
+       // private MovieRuntime runtime;
+       // private Certificate certificate;
+      //  private CanRate canRate;
+       // private TitleGenres titleGenres;
+       // private Boolean canHaveEpisodes;
+       // private LatestTrailer latestTrailer;
+       // private Object primaryWatchOption;
     }
 
     @Getter

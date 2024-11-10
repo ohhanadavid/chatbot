@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import okhttp3.OkHttpClient;
@@ -18,16 +18,17 @@ import com.handson.chatbot.model.FanFavorites;
 public class ImdbService {
 
 
-    private String getTop250Html(String keyword) throws IOException {
+    
+    private String getTop250Html() throws IOException {
             OkHttpClient client = new OkHttpClient().newBuilder()
             .build();
             Request request = new Request.Builder()
-            .url("https://www.imdb.com/chart/fan-favorites/?ref_=nv_mv_250")
+            .url("https://www.imdb.com/chart/top/?ref_=nv_mv_250")
             .method("GET", null)
             .addHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
             .addHeader("accept-language", "he-IL,he;q=0.9,en;q=0.8")
             .addHeader("cache-control", "max-age=0")
-            .addHeader("cookie", "session-id-time=2082787201l; ad-oo=0; ci=e30; session-id=138-0539178-6044610; ubid-main=133-9671415-3300408; session-token=lRpWpsKEs9TG5dz8rqatG9x5WQGmo1/dPur+iHrjyEArplsHjncaeG5Rc9K0SvYLdbcjpvHfK/vLEQdU/h1G5ZSafgMz1+lUiX7h80DTEU5T6RUVu8/1bOHe4cwhNwWh6i6hKQZZMV7Gk2n1itWDxjuX7vcuH4/5V+KsZKf7OtqwsDgQ5AgD55voMH0RkhHBmN8H/VQm4Ph7zBgBrb1i+wZKb9m2DSUWPG6c33jaV07fUKWU7FZ0KeaN9w8e7HkF1Uh2iOqNvJzIGASxNPth6iyNvcVVH5Fcnl2DFBNa1FNlQVuooT6KD559W3mZklMeucpzSQk/LVupuc3dKMn+sak6L792eV+V; csm-hit=tb:s-B9SZ6HV5MY9Z2N5KYZBC|1731226131328&t:1731226131498&adb:adblk_yes; session-id=138-0539178-6044610; session-id-time=2082787201l; session-token=lRpWpsKEs9TG5dz8rqatG9x5WQGmo1/dPur+iHrjyEArplsHjncaeG5Rc9K0SvYLdbcjpvHfK/vLEQdU/h1G5ZSafgMz1+lUiX7h80DTEU5T6RUVu8/1bOHe4cwhNwWh6i6hKQZZMV7Gk2n1itWDxjuX7vcuH4/5V+KsZKf7OtqwsDgQ5AgD55voMH0RkhHBmN8H/VQm4Ph7zBgBrb1i+wZKb9m2DSUWPG6c33jaV07fUKWU7FZ0KeaN9w8e7HkF1Uh2iOqNvJzIGASxNPth6iyNvcVVH5Fcnl2DFBNa1FNlQVuooT6KD559W3mZklMeucpzSQk/LVupuc3dKMn+sak6L792eV+V")
+            .addHeader("cookie", "session-id-time=2082787201l; ad-oo=0; ci=e30; session-id=138-0539178-6044610; ubid-main=133-9671415-3300408; session-token=lRpWpsKEs9TG5dz8rqatG9x5WQGmo1/dPur+iHrjyEArplsHjncaeG5Rc9K0SvYLdbcjpvHfK/vLEQdU/h1G5ZSafgMz1+lUiX7h80DTEU5T6RUVu8/1bOHe4cwhNwWh6i6hKQZZMV7Gk2n1itWDxjuX7vcuH4/5V+KsZKf7OtqwsDgQ5AgD55voMH0RkhHBmN8H/VQm4Ph7zBgBrb1i+wZKb9m2DSUWPG6c33jaV07fUKWU7FZ0KeaN9w8e7HkF1Uh2iOqNvJzIGASxNPth6iyNvcVVH5Fcnl2DFBNa1FNlQVuooT6KD559W3mZklMeucpzSQk/LVupuc3dKMn+sak6L792eV+V; csm-hit=tb:s-B9SZ6HV5MY9Z2N5KYZBC|1731226131328&t:1731226131498&adb:adblk_yes; session-id=138-0539178-6044610; session-id-time=2082787201l; session-token=O4u8gobEYRca/0NuEXA561/WhVEGt+9FZ8AxjYNlM9k/Ro1C69dDfYoMkDd/4a4sLyk1qazkNwG9xXqwzRFiuhDvr1TYqxbkRZ9wmTQuKN1TSRKdZ4WVRlj4Z640UOOJjiPcsbgWdmToV6bHtoWnheGRkmi1/dNfpySYKo4kItUaqcMkgdn5/lA/4O0XOwcbP03TfjSfZFGZg1Zj7zrjLdqgEmaf2R3hhY8ZFkaTuM9kv5yto5MjljUVEzQo/4woxXN6TS9luqe1ggeicJ1HEjw3pcN59+uUAgPSUBYcRwFK8cUZQrQoPQYrdsPPGW+Rc/UBzMpR/MNP4Qb8EmNkjtg5N7spT9Zh")
             .addHeader("dnt", "1")
             .addHeader("priority", "u=0, i")
             .addHeader("referer", "https://www.imdb.com/?ref_=nv_home")
@@ -48,15 +49,17 @@ public class ImdbService {
 
     public static final Pattern PRODUCT_PATTERN = Pattern.compile("\"name\":\"(.*?)\".*?\"ratingValue\":([0-9.]+)");
 
-    public String searchProducts(String keyword) throws IOException {
-        return parseProductHtml(getTop250Html(keyword));
+    public String searchProducts(Integer num_of_movies) throws IOException {
+        return parseProductHtml(getTop250Html(),num_of_movies);
     }
 
-    private String parseProductHtml(String html) {
+    private String parseProductHtml(String html,Integer num_of_movies) {
         String res = "";
         Matcher matcher = PRODUCT_PATTERN.matcher(html);
-        while (matcher.find()) {
+        int i = 1;
+        while (matcher.find()&&i<=num_of_movies ) {
             res += matcher.group(1) + " - " + matcher.group(2) +"\n";
+            i++;
         }
         return res;
     }
