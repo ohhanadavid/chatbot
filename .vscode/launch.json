@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ChatbotApplication<chatbot>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.handson.chatbot.ChatbotApplication",
+            "projectName": "chatbot",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
