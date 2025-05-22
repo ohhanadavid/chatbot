@@ -23,7 +23,7 @@ public class BotController {
     ImdbService imdbService;
 
     @RequestMapping(value = "/imdb250Top", method = RequestMethod.GET)
-    public ResponseEntity<?> get250Top(@RequestParam Integer num_of_movies) throws IOException
+    public ResponseEntity<?> get250Top(@RequestParam Double num_of_movies) throws IOException
     {
         return new ResponseEntity<>(imdbService.searchProducts(num_of_movies), HttpStatus.OK);
     }
@@ -40,7 +40,7 @@ public class BotController {
         HashMap<String, String> params = query.getQueryResult().getParameters();
         String res = "Not found";
         if (params.containsKey("num_of_movies")) {
-            res = imdbService.searchProducts(Integer.valueOf((String) params.get("num_of_movies")));
+            res = imdbService.searchProducts(Double.valueOf((String) params.get("num_of_movies")));
         } 
         return new ResponseEntity<>(BotResponse.of(res), HttpStatus.OK);
     }

@@ -79,6 +79,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>chatbot</finalName>
 	</build>
 
 </project>

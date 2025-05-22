@@ -49,11 +49,11 @@ public class ImdbService {
 
     public static final Pattern PRODUCT_PATTERN = Pattern.compile("\"name\":\"(.*?)\".*?\"ratingValue\":([0-9.]+)");
 
-    public String searchProducts(Integer num_of_movies) throws IOException {
+    public String searchProducts(Double num_of_movies) throws IOException {
         return parseProductHtml(getTop250Html(),num_of_movies);
     }
 
-    private String parseProductHtml(String html,Integer num_of_movies) {
+    private String parseProductHtml(String html,Double num_of_movies) {
         String res = "";
         Matcher matcher = PRODUCT_PATTERN.matcher(html);
         int i = 1;
